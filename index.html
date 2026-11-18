@@ -1,0 +1,64 @@
+<!doctype html>
+<!--
+  ==================== PÁGINA INICIAL (só para o teste) ====================
+  Links para a presell e para a P1. Não faz parte do funil.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Teste de layout dinâmico</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+      background: #f4f4f5;
+      color: #18181b;
+    }
+    main { max-width: 560px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    .sub { margin: 0 0 24px; color: #52525b; }
+    .bloco {
+      margin-bottom: 16px; padding: 20px;
+      background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    }
+    h2 { margin: 0 0 4px; font-size: 18px; }
+    .bloco p { margin: 0 0 12px; color: #52525b; }
+    .botao {
+      display: inline-block; padding: 10px 14px; border-radius: 8px;
+      font-weight: 600; text-decoration: none; color: #fff; background: #18181b;
+    }
+    ul { margin: 0; padding-left: 20px; }
+    li { margin: 6px 0; }
+    code { padding: 1px 5px; font: 13px ui-monospace, Consolas, monospace; background: #f4f4f5; border-radius: 4px; }
+    .ponto { display: inline-block; width: 10px; height: 10px; margin-right: 4px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Teste: presell + P1 com layout dinâmico</h1>
+    <p class="sub">A presell leva para a P1 com uma <code>utm_source</code> na URL, e a P1 mostra o layout daquela source.</p>
+
+    <section class="bloco">
+      <h2>1. Presell</h2>
+      <p>Arquivo <code>presell.html</code>. Responda as perguntas e, no último passo, escolha qual utm_source enviar.</p>
+      <a class="botao" href="presell.html">Abrir a presell</a>
+    </section>
+
+    <section class="bloco">
+      <h2>2. P1</h2>
+      <p>Arquivo <code>p1.html</code>. É uma URL só, e o layout muda pela utm_source:</p>
+      <ul>
+        <li><span class="ponto" style="background:#1d4ed8"></span><a href="p1.html?utm_source=source1">p1.html?utm_source=source1</a> → Layout 1</li>
+        <li><span class="ponto" style="background:#15803d"></span><a href="p1.html?utm_source=source2">p1.html?utm_source=source2</a> → Layout 2</li>
+        <li><span class="ponto" style="background:#c2410c"></span><a href="p1.html?utm_source=source3">p1.html?utm_source=source3</a> → Layout 3</li>
+        <li><span class="ponto" style="background:#a1a1aa"></span><a href="p1.html">p1.html</a> sem source → Layout 1 (padrão)</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<!--
+  ==================== P1 ====================
+  URL única para todas as presells. Lê a utm_source da URL e mostra o
+  Layout 1, 2 ou 3 (cada layout é um bloco <template> mais abaixo).
+  Qual source abre qual layout: CONFIG, no <script> no fim do arquivo.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>P1 de teste</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.4;
+      color: #18181b;
+      background: #fff;
+    }
+
+    /* ---------- Base comum aos layouts ---------- */
+    .layout { min-height: 100vh; padding: 32px 16px; background: var(--fundo); }
+    .card {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #fff;
+      border-top: 6px solid var(--cor);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    }
+    .selo {
+      display: inline-block; margin-bottom: 12px; padding: 4px 10px;
+      font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: #fff; background: var(--cor); border-radius: 99px;
+    }
+    h1 { margin: 0 0 8px; font-size: 26px; color: var(--cor-escura); }
+    h2 { margin: 0 0 8px; font-size: 20px; color: var(--cor-escura); }
+    p { margin: 0 0 20px; color: #52525b; }
+    .pergunta { margin: 0 0 12px; font-weight: 600; color: #18181b; }
+    .opcao {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 14px 16px;
+      border: 1px solid #d4d4d8; border-radius: 8px; cursor: pointer;
+    }
+    .opcao:has(input:checked) { border-color: var(--cor); background: var(--fundo); }
+    .opcao input { accent-color: var(--cor); }
+    .campo { display: block; margin-top: 20px; }
+    .campo span { display: block; margin-bottom: 6px; font-weight: 600; }
+    .campo input {
+      width: 100%; padding: 14px 16px; font: inherit; font-size: 16px;
+      border: 1px solid #d4d4d8; border-radius: 8px;
+    }
+    .campo input:focus { outline: 2px solid var(--cor); outline-offset: 1px; border-color: var(--cor); }
+    .cta {
+      width: 100%; margin-top: 16px; padding: 14px 16px;
+      font: inherit; font-size: 16px; font-weight: 600; cursor: pointer;
+      color: #fff; background: var(--cor); border: 0; border-radius: 8px;
+    }
+    .cta:hover { background: var(--cor-escura); }
+    .resumo { margin: 0; font-size: 14px; word-break: break-all; }
+
+    /* ---------- Cores de cada layout ---------- */
+    .layout-1 { --cor: #1d4ed8; --cor-escura: #1e3a8a; --fundo: #dbeafe; } /* azul */
+    .layout-2 { --cor: #15803d; --cor-escura: #14532d; --fundo: #dcfce7; } /* verde */
+    .layout-3 { --cor: #c2410c; --cor-escura: #7c2d12; --fundo: #ffedd5; } /* laranja */
+
+    /* Etiqueta de diagnóstico (canto inferior esquerdo) */
+    #debug {
+      position: fixed; left: 8px; bottom: 8px; max-width: calc(100% - 16px);
+      padding: 6px 10px; border-radius: 6px;
+      font: 12px/1.4 ui-monospace, Consolas, monospace; word-break: break-all;
+      color: #fff; background: rgba(0, 0, 0, .8);
+    }
+  </style>
+</head>
+<body>
+  <!-- O layout escolhido pela utm_source é colocado aqui. -->
+  <div id="app"></div>
+  <div id="debug" hidden></div>
+
+  <!-- ===================== LAYOUT 1 · AZUL ===================== -->
+  <template id="layout-1">
+    <div class="layout layout-1">
+      <main class="card">
+        <span class="selo">Layout 1</span>
+        <h1>Este é o Layout 1</h1>
+        <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 1.</p>
+        <form class="form-lead">
+          <p class="pergunta">Última pergunta de teste?</p>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
+          <label class="campo">
+            <span>Seu melhor e-mail</span>
+            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+          </label>
+          <button class="cta" type="submit">Enviar</button>
+        </form>
+        <div class="sucesso" hidden>
+          <h2>Pronto, e-mail capturado!</h2>
+          <p class="resumo"></p>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- ===================== LAYOUT 2 · VERDE ===================== -->
+  <template id="layout-2">
+    <div class="layout layout-2">
+      <main class="card">
+        <span class="selo">Layout 2</span>
+        <h1>Este é o Layout 2</h1>
+        <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 2.</p>
+        <form class="form-lead">
+          <p class="pergunta">Última pergunta de teste?</p>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
+          <label class="campo">
+            <span>Seu melhor e-mail</span>
+            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+          </label>
+          <button class="cta" type="submit">Enviar</button>
+        </form>
+        <div class="sucesso" hidden>
+          <h2>Pronto, e-mail capturado!</h2>
+          <p class="resumo"></p>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- ===================== LAYOUT 3 · LARANJA ===================== -->
+  <template id="layout-3">
+    <div class="layout layout-3">
+      <main class="card">
+        <span class="selo">Layout 3</span>
+        <h1>Este é o Layout 3</h1>
+        <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 3.</p>
+        <form class="form-lead">
+          <p class="pergunta">Última pergunta de teste?</p>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
+          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
+          <label class="campo">
+            <span>Seu melhor e-mail</span>
+            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+          </label>
+          <button class="cta" type="submit">Enviar</button>
+        </form>
+        <div class="sucesso" hidden>
+          <h2>Pronto, e-mail capturado!</h2>
+          <p class="resumo"></p>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <script>
+    // ============================ CONFIGURAÇÃO ============================
+    const CONFIG = {
+      // Qual layout cada utm_source abre. Escreva as sources em minúsculas
+      // (a comparação ignora maiúsculas). Várias sources podem usar o mesmo layout.
+      layoutPorSource: {
+        source1: 'layout-1',
+        source2: 'layout-2',
+        source3: 'layout-3',
+      },
+      // Usado quando a utm_source não vem na URL ou não está na lista acima.
+      layoutPadrao: 'layout-1',
+      // Etiqueta no canto da tela mostrando a source lida. Mude para false na operação.
+      mostrarDebug: true,
+    };
+    // =====================================================================
+
+    const params = new URLSearchParams(location.search);
+    const source = (params.get('utm_source') || '').trim().toLowerCase();
+    const conhecida = Object.prototype.hasOwnProperty.call(CONFIG.layoutPorSource, source);
+
+    let layoutId = conhecida ? CONFIG.layoutPorSource[source] : CONFIG.layoutPadrao;
+    if (!document.getElementById(layoutId)) layoutId = CONFIG.layoutPadrao;
+
+    // Coloca na página só o HTML do layout escolhido.
+    const app = document.getElementById('app');
+    app.appendChild(document.getElementById(layoutId).content.cloneNode(true));
+
+    if (CONFIG.mostrarDebug) {
+      const debug = document.getElementById('debug');
+      debug.textContent = 'utm_source: ' + (source || '(vazia)') + ' → ' + layoutId + (conhecida ? '' : ' (padrão)');
+      debug.hidden = false;
+    }
+
+    // Leva junto com o lead o layout exibido e todos os parâmetros da URL (utm_*, gclid…).
+    const form = app.querySelector('.form-lead');
+    const extras = new URLSearchParams(location.search);
+    extras.set('layout', layoutId);
+    extras.forEach((valor, chave) => {
+      if (form.elements[chave]) return;
+      const campo = document.createElement('input');
+      campo.type = 'hidden';
+      campo.name = chave;
+      campo.value = valor;
+      form.appendChild(campo);
+    });
+
+    form.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      const lead = Object.fromEntries(new FormData(form));
+
+      // AQUI entra o envio do lead (ferramenta de e-mail, webhook, planilha…).
+      // No teste ele só aparece no console e na tela.
+      console.log('Lead capturado (teste):', lead);
+
+      form.hidden = true;
+      const sucesso = app.querySelector('.sucesso');
+      sucesso.querySelector('.resumo').textContent =
+        'E-mail: ' + lead.email + ' · Resposta: ' + lead.resposta +
+        ' · utm_source: ' + (lead.utm_source || '(vazia)') + ' · ' + lead.layout;
+      sucesso.hidden = false;
+    });
+  </script>
+</body>
+</html>

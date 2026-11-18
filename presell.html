@@ -1,0 +1,138 @@
+<!doctype html>
+<!--
+  ==================== PRESELL (teste) ====================
+  Página das perguntas. O botão do último passo leva para a P1 (p1.html)
+  com a utm_source na URL. O painel "Teste: qual utm_source..." existe só
+  para escolher a source na mão durante o teste.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Presell de teste</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 16px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.4;
+      background: #f4f4f5;
+      color: #18181b;
+    }
+    .card {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    }
+    .progresso { height: 6px; margin-bottom: 24px; background: #e4e4e7; border-radius: 99px; overflow: hidden; }
+    #barra { height: 100%; width: 0; background: #18181b; transition: width .2s; }
+    .tag { margin: 0 0 8px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #71717a; }
+    h1 { margin: 0 0 20px; font-size: 22px; }
+    button { font: inherit; font-size: 16px; cursor: pointer; }
+    .opcao {
+      display: block; width: 100%; margin-bottom: 10px; padding: 14px 16px;
+      text-align: left; color: inherit; background: #fff;
+      border: 1px solid #d4d4d8; border-radius: 8px;
+    }
+    .opcao:hover { border-color: #18181b; }
+    .painel { margin: 0 0 16px; padding: 8px 16px 12px; border: 1px dashed #a1a1aa; border-radius: 8px; }
+    .painel legend { padding: 0 6px; font-size: 13px; font-weight: 600; }
+    .painel label { display: flex; align-items: center; gap: 8px; padding: 6px 0; cursor: pointer; }
+    .cta {
+      display: block; width: 100%; padding: 14px 16px; font-weight: 600;
+      color: #fff; background: #18181b; border: 0; border-radius: 8px;
+    }
+    .destino { margin: 10px 0 0; font-size: 12px; color: #71717a; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="progresso"><div id="barra"></div></div>
+
+    <section class="etapa">
+      <p class="tag">Presell de teste · Pergunta 1 de 2</p>
+      <h1>Pergunta de teste número 1?</h1>
+      <button class="opcao" type="button">Opção A</button>
+      <button class="opcao" type="button">Opção B</button>
+      <button class="opcao" type="button">Opção C</button>
+    </section>
+
+    <section class="etapa" hidden>
+      <p class="tag">Presell de teste · Pergunta 2 de 2</p>
+      <h1>Pergunta de teste número 2?</h1>
+      <button class="opcao" type="button">Opção A</button>
+      <button class="opcao" type="button">Opção B</button>
+      <button class="opcao" type="button">Opção C</button>
+    </section>
+
+    <section class="etapa" hidden>
+      <p class="tag">Presell de teste · Último passo</p>
+      <h1>Tudo certo! Clique para continuar.</h1>
+
+      <!-- PAINEL DE TESTE: só existe para escolher a utm_source na mão.
+           Nas presells reais ele sai, e a utm_source que veio do Google Ads é repassada sozinha. -->
+      <fieldset class="painel">
+        <legend>Teste: qual utm_source enviar para a P1?</legend>
+        <label><input type="radio" name="utm_source" value="source1" checked> source1 → Layout 1</label>
+        <label><input type="radio" name="utm_source" value="source2"> source2 → Layout 2</label>
+        <label><input type="radio" name="utm_source" value="source3"> source3 → Layout 3</label>
+      </fieldset>
+
+      <button class="cta" id="continuar" type="button">Continuar</button>
+      <p class="destino">Vai para: <span id="url-destino"></span></p>
+    </section>
+  </main>
+
+  <script>
+    // Endereço da P1. 'p1.html' = mesmo site do GitHub Pages (…/p1.html).
+    // Na operação real pode ser uma URL completa, ex.: 'https://seudominio.com/p1.html'.
+    const P1_URL = 'p1.html';
+
+    const etapas = document.querySelectorAll('.etapa');
+    const barra = document.getElementById('barra');
+    const urlDestino = document.getElementById('url-destino');
+    let atual = 0;
+
+    // Monta a URL da P1 repassando tudo o que chegou na presell (utm_*, gclid…).
+    // Se o painel de teste estiver na página, a utm_source marcada nele substitui a que chegou.
+    function urlDaP1() {
+      const destino = new URL(P1_URL, location.href);
+      new URLSearchParams(location.search).forEach((valor, chave) => destino.searchParams.set(chave, valor));
+      const escolhida = document.querySelector('input[name="utm_source"]:checked');
+      if (escolhida) destino.searchParams.set('utm_source', escolhida.value);
+      return destino.href;
+    }
+
+    function mostrarEtapa(i) {
+      etapas.forEach((etapa, n) => { etapa.hidden = n !== i; });
+      barra.style.width = ((i + 1) / etapas.length) * 100 + '%';
+      atual = i;
+      urlDestino.textContent = urlDaP1();
+    }
+
+    document.querySelectorAll('.opcao').forEach((botao) => {
+      botao.addEventListener('click', () => mostrarEtapa(atual + 1));
+    });
+
+    // Se a presell já chegou com uma utm_source do painel (ex.: ?utm_source=source2), deixa ela marcada.
+    const sourceRecebida = new URLSearchParams(location.search).get('utm_source');
+    document.querySelectorAll('input[name="utm_source"]').forEach((radio) => {
+      if (radio.value === sourceRecebida) radio.checked = true;
+      radio.addEventListener('change', () => { urlDestino.textContent = urlDaP1(); });
+    });
+
+    document.getElementById('continuar').addEventListener('click', () => {
+      location.href = urlDaP1();
+    });
+
+    mostrarEtapa(0);
+  </script>
+</body>
+</html>
