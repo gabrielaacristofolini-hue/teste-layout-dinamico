@@ -73,7 +73,7 @@
       width: 100%; max-width: 400px; padding: 24px;
       text-align: center; background: #fff; border-radius: 12px;
     }
-    .alerta h2 { margin: 0 0 8px; font-size: 20px; color: #18181b; }
+    .alerta h2 { margin: 0 0 8px; font-size: 20px; color: #18181b; overflow-wrap: anywhere; }
     .alerta p { margin: 0 0 16px; color: #52525b; }
     .alerta code { padding: 1px 5px; font: 13px ui-monospace, Consolas, monospace; background: #f4f4f5; border-radius: 4px; }
     .alerta-opcoes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -93,7 +93,7 @@
   <div id="bloqueio" hidden>
     <div class="alerta" role="alertdialog" aria-modal="true" aria-labelledby="alerta-titulo" aria-describedby="alerta-texto">
       <h2 id="alerta-titulo">Falta a utm_source na URL</h2>
-      <p id="alerta-texto">Esta página só abre com uma utm_source. Escolha uma abaixo ou coloque na URL, por exemplo: <code>?utm_source=source1</code></p>
+      <p id="alerta-texto">Esta página só abre com uma utm_source cadastrada. Escolha uma abaixo ou coloque na URL, por exemplo: <code>?utm_source=source1</code></p>
       <div class="alerta-opcoes"></div>
     </div>
   </div>
@@ -171,11 +171,12 @@
         source2: 'layout-2',
         source3: 'layout-3',
       },
-      // Usado quando a utm_source não vem na URL ou não está na lista acima.
+      // Layout para source fora da lista. Só é usado se o bloqueio abaixo estiver desligado.
       layoutPadrao: 'layout-1',
       // Etiqueta no canto da tela mostrando a source lida. Mude para false na operação.
       mostrarDebug: true,
-      // Sem utm_source na URL: cobre a página com um alerta e bloqueia tudo.
+      // Sem utm_source na URL, ou com uma que não está na lista acima:
+      // cobre a página com fundo preto e um alerta, e bloqueia tudo.
       bloquearSemSource: true,
     };
     // =====================================================================
@@ -197,9 +198,12 @@
       debug.hidden = false;
     }
 
-    // Sem utm_source na URL: mostra o alerta, com um botão para cada source do CONFIG,
-    // e trava a página de trás (sem clique, sem teclado, sem rolagem).
-    if (!source && CONFIG.bloquearSemSource) {
+    // Sem utm_source, ou com uma que não está no CONFIG: mostra o alerta, com um botão
+    // para cada source cadastrada, e trava a página de trás (sem clique, teclado ou rolagem).
+    if (!conhecida && CONFIG.bloquearSemSource) {
+      if (source) {
+        document.getElementById('alerta-titulo').textContent = 'utm_source "' + source + '" não reconhecida';
+      }
       const opcoes = document.querySelector('.alerta-opcoes');
       Object.keys(CONFIG.layoutPorSource).forEach((nome) => {
         const url = new URL(location.href);

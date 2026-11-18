@@ -7,7 +7,7 @@ Várias presells mandam o visitante para a **mesma P1**. A P1 lê a `utm_source`
 | Arquivo | O que é |
 |---|---|
 | [`index.html`](index.html) | **Presell** de teste. É a página que abre na raiz do site: 2 perguntas e, no último passo, um painel (só de teste) para escolher qual `utm_source` mandar. |
-| [`p1.html`](p1.html) | **P1**: URL única que troca o layout conforme a `utm_source` que chega. Sem `utm_source`, a página fica bloqueada com um alerta. |
+| [`p1.html`](p1.html) | **P1**: URL única que troca o layout conforme a `utm_source` que chega. Sem `utm_source`, ou com uma fora da lista, a página fica bloqueada com um alerta. |
 
 As duas partes são HTML puro, cada uma em um arquivo só: o CSS e o script ficam dentro do próprio arquivo, sem nenhum arquivo externo.
 
@@ -25,10 +25,10 @@ O GitHub Pages publica a branch **main**, pasta **/ (root)** (Settings → Pages
 | `source1` | Layout 1 (azul) |
 | `source2` | Layout 2 (verde) |
 | `source3` | Layout 3 (laranja) |
-| desconhecida (ex.: `google`) | Layout 1 (padrão) |
-| sem `utm_source` | página bloqueada: fundo totalmente preto e um alerta pedindo a source |
+| qualquer outra (ex.: `google`) | página bloqueada: fundo totalmente preto e um alerta pedindo uma source válida |
+| sem `utm_source` | página bloqueada do mesmo jeito |
 
-Maiúsculas não importam (`Source2` = `source2`). Essa tabela fica no `CONFIG`, no fim do `p1.html`. O bloqueio liga e desliga em `bloquearSemSource`.
+Maiúsculas não importam (`Source2` = `source2`). Essa tabela fica no `CONFIG`, no fim do `p1.html`. O bloqueio liga e desliga em `bloquearSemSource`; desligado, uma source fora da lista abre o `layoutPadrao` (Layout 1).
 
 ## Adicionar uma operação nova (ex.: Layout 4)
 
