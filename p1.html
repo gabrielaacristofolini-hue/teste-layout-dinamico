@@ -43,24 +43,11 @@
     p { margin: 0 0 20px; color: #52525b; }
     .pergunta { margin: 0 0 12px; font-weight: 600; color: #18181b; }
     .opcao {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 14px 16px;
-      border: 1px solid #d4d4d8; border-radius: 8px; cursor: pointer;
+      display: block; width: 100%; margin-bottom: 10px; padding: 14px 16px;
+      font: inherit; font-size: 16px; text-align: left; cursor: pointer;
+      color: inherit; background: #fff; border: 1px solid #d4d4d8; border-radius: 8px;
     }
-    .opcao:has(input:checked) { border-color: var(--cor); background: var(--fundo); }
-    .opcao input { accent-color: var(--cor); }
-    .campo { display: block; margin-top: 20px; }
-    .campo span { display: block; margin-bottom: 6px; font-weight: 600; }
-    .campo input {
-      width: 100%; padding: 14px 16px; font: inherit; font-size: 16px;
-      border: 1px solid #d4d4d8; border-radius: 8px;
-    }
-    .campo input:focus { outline: 2px solid var(--cor); outline-offset: 1px; border-color: var(--cor); }
-    .cta {
-      width: 100%; margin-top: 16px; padding: 14px 16px;
-      font: inherit; font-size: 16px; font-weight: 600; cursor: pointer;
-      color: #fff; background: var(--cor); border: 0; border-radius: 8px;
-    }
-    .cta:hover { background: var(--cor-escura); }
+    .opcao:hover { border-color: var(--cor); background: var(--fundo); }
     .resumo { margin: 0; font-size: 14px; word-break: break-all; }
 
     /* ---------- Cores de cada layout ---------- */
@@ -89,19 +76,14 @@
         <span class="selo">Layout 1</span>
         <h1>Este é o Layout 1</h1>
         <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 1.</p>
-        <form class="form-lead">
+        <div class="pergunta-final">
           <p class="pergunta">Última pergunta de teste?</p>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
-          <label class="campo">
-            <span>Seu melhor e-mail</span>
-            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
-          </label>
-          <button class="cta" type="submit">Enviar</button>
-        </form>
-        <div class="sucesso" hidden>
-          <h2>Pronto, e-mail capturado!</h2>
+          <button class="opcao" type="button">Opção A</button>
+          <button class="opcao" type="button">Opção B</button>
+          <button class="opcao" type="button">Opção C</button>
+        </div>
+        <div class="resultado" hidden>
+          <h2>Resposta registrada!</h2>
           <p class="resumo"></p>
         </div>
       </main>
@@ -115,19 +97,14 @@
         <span class="selo">Layout 2</span>
         <h1>Este é o Layout 2</h1>
         <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 2.</p>
-        <form class="form-lead">
+        <div class="pergunta-final">
           <p class="pergunta">Última pergunta de teste?</p>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
-          <label class="campo">
-            <span>Seu melhor e-mail</span>
-            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
-          </label>
-          <button class="cta" type="submit">Enviar</button>
-        </form>
-        <div class="sucesso" hidden>
-          <h2>Pronto, e-mail capturado!</h2>
+          <button class="opcao" type="button">Opção A</button>
+          <button class="opcao" type="button">Opção B</button>
+          <button class="opcao" type="button">Opção C</button>
+        </div>
+        <div class="resultado" hidden>
+          <h2>Resposta registrada!</h2>
           <p class="resumo"></p>
         </div>
       </main>
@@ -141,19 +118,14 @@
         <span class="selo">Layout 3</span>
         <h1>Este é o Layout 3</h1>
         <p>Texto genérico de teste. Aqui entra o conteúdo com a cara da presell 3.</p>
-        <form class="form-lead">
+        <div class="pergunta-final">
           <p class="pergunta">Última pergunta de teste?</p>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção A" required> Opção A</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção B"> Opção B</label>
-          <label class="opcao"><input type="radio" name="resposta" value="Opção C"> Opção C</label>
-          <label class="campo">
-            <span>Seu melhor e-mail</span>
-            <input type="email" name="email" placeholder="voce@exemplo.com" autocomplete="email" required>
-          </label>
-          <button class="cta" type="submit">Enviar</button>
-        </form>
-        <div class="sucesso" hidden>
-          <h2>Pronto, e-mail capturado!</h2>
+          <button class="opcao" type="button">Opção A</button>
+          <button class="opcao" type="button">Opção B</button>
+          <button class="opcao" type="button">Opção C</button>
+        </div>
+        <div class="resultado" hidden>
+          <h2>Resposta registrada!</h2>
           <p class="resumo"></p>
         </div>
       </main>
@@ -194,33 +166,20 @@
       debug.hidden = false;
     }
 
-    // Leva junto com o lead o layout exibido e todos os parâmetros da URL (utm_*, gclid…).
-    const form = app.querySelector('.form-lead');
-    const extras = new URLSearchParams(location.search);
-    extras.set('layout', layoutId);
-    extras.forEach((valor, chave) => {
-      if (form.elements[chave]) return;
-      const campo = document.createElement('input');
-      campo.type = 'hidden';
-      campo.name = chave;
-      campo.value = valor;
-      form.appendChild(campo);
-    });
+    // Última pergunta: ao clicar numa opção, mostra a resposta (só para o teste).
+    app.querySelectorAll('.opcao').forEach((botao) => {
+      botao.addEventListener('click', () => {
+        const resposta = botao.textContent.trim();
 
-    form.addEventListener('submit', (evento) => {
-      evento.preventDefault();
-      const lead = Object.fromEntries(new FormData(form));
+        // AQUI entra o próximo passo da operação (ex.: levar para a página monetizada).
+        console.log('Resposta (teste):', { resposta, utm_source: source || '(vazia)', layout: layoutId });
 
-      // AQUI entra o envio do lead (ferramenta de e-mail, webhook, planilha…).
-      // No teste ele só aparece no console e na tela.
-      console.log('Lead capturado (teste):', lead);
-
-      form.hidden = true;
-      const sucesso = app.querySelector('.sucesso');
-      sucesso.querySelector('.resumo').textContent =
-        'E-mail: ' + lead.email + ' · Resposta: ' + lead.resposta +
-        ' · utm_source: ' + (lead.utm_source || '(vazia)') + ' · ' + lead.layout;
-      sucesso.hidden = false;
+        app.querySelector('.pergunta-final').hidden = true;
+        const resultado = app.querySelector('.resultado');
+        resultado.querySelector('.resumo').textContent =
+          'Resposta: ' + resposta + ' · utm_source: ' + (source || '(vazia)') + ' · ' + layoutId;
+        resultado.hidden = false;
+      });
     });
   </script>
 </body>

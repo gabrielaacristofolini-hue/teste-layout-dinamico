@@ -43,4 +43,4 @@ Maiúsculas não importam (`Source2` = `source2`). Essa tabela fica no `CONFIG`,
 ## Levando para a operação
 
 - **Presells reais:** o botão final precisa levar até a P1 a `utm_source` que chegou do Google Ads. A função `urlDaP1()` do `presell.html` já faz isso (repassa todos os parâmetros da URL, como `gclid` e `utm_campaign`); é só tirar o painel de teste.
-- **P1:** mude `mostrarDebug` para `false` e ligue o envio do lead no ponto marcado com `AQUI entra o envio do lead`. Por enquanto o e-mail só aparece na tela e no console.
+- **P1:** mude `mostrarDebug` para `false`. O que acontece depois da última pergunta fica no ponto marcado com `AQUI entra o próximo passo` (por enquanto só aparece uma mensagem de teste).
