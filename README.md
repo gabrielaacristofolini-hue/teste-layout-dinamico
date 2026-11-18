@@ -26,7 +26,7 @@ O GitHub Pages publica a branch **main**, pasta **/ (root)** (Settings → Pages
 | `source2` | Layout 2 (verde) |
 | `source3` | Layout 3 (laranja) |
 | desconhecida (ex.: `google`) | Layout 1 (padrão) |
-| sem `utm_source` | página bloqueada: fundo preto borrado e um alerta pedindo a source |
+| sem `utm_source` | página bloqueada: fundo totalmente preto e um alerta pedindo a source |
 
 Maiúsculas não importam (`Source2` = `source2`). Essa tabela fica no `CONFIG`, no fim do `p1.html`. O bloqueio liga e desliga em `bloquearSemSource`.
 

@@ -63,13 +63,11 @@
       color: #fff; background: rgba(0, 0, 0, .8);
     }
 
-    /* Bloqueio quando a URL chega sem utm_source: fundo preto borrado + alerta branco */
+    /* Bloqueio quando a URL chega sem utm_source: fundo totalmente preto + alerta branco */
     #bloqueio {
       position: fixed; inset: 0; z-index: 1000;
       display: flex; align-items: center; justify-content: center; padding: 16px;
-      background: rgba(0, 0, 0, .85);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
+      background: #000;
     }
     .alerta {
       width: 100%; max-width: 400px; padding: 24px;
