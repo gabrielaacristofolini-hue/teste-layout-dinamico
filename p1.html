@@ -62,12 +62,43 @@
       font: 12px/1.4 ui-monospace, Consolas, monospace; word-break: break-all;
       color: #fff; background: rgba(0, 0, 0, .8);
     }
+
+    /* Bloqueio quando a URL chega sem utm_source: fundo preto borrado + alerta branco */
+    #bloqueio {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 16px;
+      background: rgba(0, 0, 0, .85);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+    .alerta {
+      width: 100%; max-width: 400px; padding: 24px;
+      text-align: center; background: #fff; border-radius: 12px;
+    }
+    .alerta h2 { margin: 0 0 8px; font-size: 20px; color: #18181b; }
+    .alerta p { margin: 0 0 16px; color: #52525b; }
+    .alerta code { padding: 1px 5px; font: 13px ui-monospace, Consolas, monospace; background: #f4f4f5; border-radius: 4px; }
+    .alerta-opcoes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .alerta-opcoes a {
+      padding: 10px 14px; font-weight: 600; text-decoration: none;
+      color: #fff; background: #18181b; border-radius: 8px;
+    }
+    html.bloqueada, html.bloqueada body { overflow: hidden; }
   </style>
 </head>
 <body>
   <!-- O layout escolhido pela utm_source é colocado aqui. -->
   <div id="app"></div>
   <div id="debug" hidden></div>
+
+  <!-- Alerta que cobre a página quando a URL chega sem utm_source. -->
+  <div id="bloqueio" hidden>
+    <div class="alerta" role="alertdialog" aria-modal="true" aria-labelledby="alerta-titulo" aria-describedby="alerta-texto">
+      <h2 id="alerta-titulo">Falta a utm_source na URL</h2>
+      <p id="alerta-texto">Esta página só abre com uma utm_source. Escolha uma abaixo ou coloque na URL, por exemplo: <code>?utm_source=source1</code></p>
+      <div class="alerta-opcoes"></div>
+    </div>
+  </div>
 
   <!-- ===================== LAYOUT 1 · AZUL ===================== -->
   <template id="layout-1">
@@ -146,6 +177,8 @@
       layoutPadrao: 'layout-1',
       // Etiqueta no canto da tela mostrando a source lida. Mude para false na operação.
       mostrarDebug: true,
+      // Sem utm_source na URL: cobre a página com um alerta e bloqueia tudo.
+      bloquearSemSource: true,
     };
     // =====================================================================
 
@@ -164,6 +197,23 @@
       const debug = document.getElementById('debug');
       debug.textContent = 'utm_source: ' + (source || '(vazia)') + ' → ' + layoutId + (conhecida ? '' : ' (padrão)');
       debug.hidden = false;
+    }
+
+    // Sem utm_source na URL: mostra o alerta, com um botão para cada source do CONFIG,
+    // e trava a página de trás (sem clique, sem teclado, sem rolagem).
+    if (!source && CONFIG.bloquearSemSource) {
+      const opcoes = document.querySelector('.alerta-opcoes');
+      Object.keys(CONFIG.layoutPorSource).forEach((nome) => {
+        const url = new URL(location.href);
+        url.searchParams.set('utm_source', nome);
+        const link = document.createElement('a');
+        link.href = url.href;
+        link.textContent = nome;
+        opcoes.appendChild(link);
+      });
+      app.inert = true;
+      document.documentElement.classList.add('bloqueada');
+      document.getElementById('bloqueio').hidden = false;
     }
 
     // Última pergunta: ao clicar numa opção, mostra a resposta (só para o teste).
